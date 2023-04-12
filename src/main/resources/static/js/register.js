@@ -32,10 +32,31 @@ function checkNicknameDuplication() {
     });
 }
 
-function checkVerification() {
+function sendCode() {
+    const email = $('#email-input').val();
+
     $.ajax({
         type: 'POST',
-        url: `/api/member/verify`
+        url: `/api/member/mailSender`,
+        data: {
+            'email': email
+        }
+    }).done(function () {
+        alert('메일 전송 완료');
+    }).fail(function () {
+        alert('메일 전송 실패');
+    });
+}
+
+function checkVerification() {
+    const code = $('#verification-code-input').val();
+
+    $.ajax({
+        type: 'POST',
+        url: `/api/member/verify`,
+        data: {
+            'code': code
+        }
     }).done(function () {
         alert('이메일 인증 완료');
     }).fail(function () {

@@ -56,11 +56,11 @@ public class SecurityConfig {
                 .rememberMe().disable();
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers(HttpMethod.HEAD, "/api/member/email/**", "/api/member/nickname/**").anonymous()
                 .requestMatchers(HttpMethod.GET, "/", "/register", "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/admin").hasAuthority("관리자")
-                .requestMatchers(HttpMethod.POST, "/api/member/email/**").anonymous()
-                .requestMatchers(HttpMethod.POST, "/api/member").anonymous()
-                .requestMatchers(HttpMethod.POST, "/api/member/login").anonymous()
+                .requestMatchers(HttpMethod.POST, "/api/member/mailSender", "/api/member/verify",
+                        "/api/member/register", "/api/member/login").anonymous()
                 .anyRequest().authenticated()
         );
 

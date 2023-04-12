@@ -70,7 +70,6 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
                 response.sendRedirect(request.getRequestURI());
             }
         } catch (final Exception ex) {
-            ex.printStackTrace();
             final String[] uriTokens = request.getRequestURI().substring(1).split("/");
 
             log.warn("Authentication exception occurrence: {}", authException.getMessage());

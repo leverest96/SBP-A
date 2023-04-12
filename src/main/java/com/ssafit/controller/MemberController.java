@@ -63,12 +63,12 @@ public class MemberController {
     }
 
     @PostMapping("/mailSender")
-    public String verificationSender(final String email) throws MessagingException {
+    public String verificationSender(@RequestParam final String email) throws MessagingException {
         return memberService.verificationSender(email);
     }
 
     @PostMapping("/verify")
-    public void verify(final String code) {
+    public void verify(@RequestParam final String code) {
         memberService.verification(code);
     }
 }
