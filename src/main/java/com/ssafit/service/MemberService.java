@@ -18,14 +18,11 @@ import com.ssafit.utility.jwt.JwtProvider;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +41,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     private final JavaMailSender mailSender;
-    private final SpringTemplateEngine templateEngine;
 
     public boolean checkEmailDuplication(final String email) {
         return memberRepository.findByEmail(email).isPresent();
@@ -84,7 +80,7 @@ public class MemberService {
                 .nickname(requestDto.getNickname())
                 .studentId(requestDto.getStudentId())
                 .phone(requestDto.getPhone())
-                .image(requestDto.getImage())
+                .image("https://www.google.com/url?sa=i&url=https%3A%2F%2Fjhblog.tistory.com%2F372&psig=AOvVaw1reZ5UhkNOINfn_WwN8B3u&ust=1681433982632000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOj2z-vTpf4CFQAAAAAdAAAAABAE")
                 .role((requestDto.isAdmin()) ? (Role.ADMIN) : (Role.USER))
                 .build();
 

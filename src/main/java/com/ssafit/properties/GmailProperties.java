@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "gmail")
+@ConfigurationProperties(prefix = "spring.mail")
 @Getter
 @RequiredArgsConstructor
 public class GmailProperties {

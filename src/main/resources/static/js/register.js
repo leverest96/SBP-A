@@ -74,7 +74,7 @@ function register() {
 
     $.ajax({
         type: 'POST',
-        url: '/api/member',
+        url: '/api/member/register',
         contentType: 'application/json',
         data: JSON.stringify({
             'email': email,
