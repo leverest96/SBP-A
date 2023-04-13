@@ -14,7 +14,6 @@ public class IndexController {
     }
 
     @GetMapping("/register")
-    // @AuthenticationPrincipal 어노테이션을 적용하면 SecurityContext에 저장된 Authentication의 Principal을 해당 파라미터에 주입
     public String directRegisterPage(@AuthenticationPrincipal final MemberDetails memberDetails) {
         if (memberDetails != null) {
             return "redirect:/";
@@ -24,7 +23,6 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    // @AuthenticationPrincipal 어노테이션을 적용하면 SecurityContext에 저장된 Authentication의 Principal을 해당 파라미터에 주입
     public String directLoginPage(@AuthenticationPrincipal final MemberDetails memberDetails) {
         if (memberDetails != null) {
             return "redirect:/";
@@ -34,7 +32,6 @@ public class IndexController {
     }
 
     @GetMapping("/member")
-    // @AuthenticationPrincipal 어노테이션을 적용하면 SecurityContext에 저장된 Authentication의 Principal을 해당 파라미터에 주입
     public String directMemberPage(@AuthenticationPrincipal final MemberDetails memberDetails,
                                    final Model model) {
         model.addAttribute("studentId", memberDetails.getStudentId());
@@ -44,7 +41,6 @@ public class IndexController {
     }
 
     @GetMapping("/admin")
-    // @AuthenticationPrincipal 어노테이션을 적용하면 SecurityContext에 저장된 Authentication의 Principal을 해당 파라미터에 주입
     public String directAdminPage(@AuthenticationPrincipal final MemberDetails memberDetails,
                                   final Model model) {
         model.addAttribute("studentId", memberDetails.getStudentId());
