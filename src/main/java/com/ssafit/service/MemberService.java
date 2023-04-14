@@ -4,10 +4,10 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.ssafit.domain.Member;
 import com.ssafit.domain.Role;
 import com.ssafit.domain.Verification;
-import com.ssafit.dto.MemberLoginRequestDto;
-import com.ssafit.dto.MemberLoginResponseDto;
-import com.ssafit.dto.MemberRegisterRequestDto;
-import com.ssafit.dto.MemberRegisterResponseDto;
+import com.ssafit.dto.Member.MemberLoginRequestDto;
+import com.ssafit.dto.Member.MemberLoginResponseDto;
+import com.ssafit.dto.Member.MemberRegisterRequestDto;
+import com.ssafit.dto.Member.MemberRegisterResponseDto;
 import com.ssafit.exception.MemberException;
 import com.ssafit.exception.VerificationException;
 import com.ssafit.exception.status.MemberStatus;
@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,13 +50,11 @@ public class MemberService {
     }
 
     public boolean checkVerification(final String email) {
-        final Optional<Verification> verification = verificationRepository.findByEmail(email);
+        final Verification verification = verificationRepository.findByEmail(email).orElseThrow(
+                () -> new VerificationException(VerificationStatus.NOT_EXISTING_EMAIL)
+        );
 
-        if (verification.isEmpty()) {
-            throw new VerificationException(VerificationStatus.NOT_EXISTING_EMAIL);
-        }
-
-        return verification.get().isState();
+        return verification.isState();
     }
 
     @Transactional
@@ -92,13 +89,9 @@ public class MemberService {
     }
 
     public MemberLoginResponseDto login(final MemberLoginRequestDto requestDto) throws JWTCreationException {
-        final Optional<Member> result = memberRepository.findByEmail(requestDto.getEmail());
-
-        if (result.isEmpty()) {
-            throw new MemberException(MemberStatus.NOT_EXISTING_EMAIL);
-        }
-
-        final Member member = result.get();
+        final Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(
+                () -> new MemberException(MemberStatus.NOT_EXISTING_EMAIL)
+        );
 
         if (!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())) {
             throw new MemberException(MemberStatus.INCORRECT_PASSWORD);

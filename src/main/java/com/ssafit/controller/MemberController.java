@@ -1,9 +1,9 @@
 package com.ssafit.controller;
 
-import com.ssafit.dto.MemberLoginRequestDto;
-import com.ssafit.dto.MemberLoginResponseDto;
-import com.ssafit.dto.MemberRegisterRequestDto;
-import com.ssafit.dto.MemberRegisterResponseDto;
+import com.ssafit.dto.Member.MemberLoginRequestDto;
+import com.ssafit.dto.Member.MemberLoginResponseDto;
+import com.ssafit.dto.Member.MemberRegisterRequestDto;
+import com.ssafit.dto.Member.MemberRegisterResponseDto;
 import com.ssafit.properties.jwt.AccessTokenProperties;
 import com.ssafit.properties.jwt.RefreshTokenProperties;
 import com.ssafit.service.MemberService;

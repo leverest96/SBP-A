@@ -10,7 +10,7 @@ import java.util.Random;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Verification {
+public class Verification extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final int id;

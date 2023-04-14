@@ -1,12 +1,11 @@
-package com.ssafit.dto;
+package com.ssafit.dto.Member;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 @Builder
-@Getter
 public class MemberLoginResponseDto {
     private final String accessToken;
     private final String refreshToken;

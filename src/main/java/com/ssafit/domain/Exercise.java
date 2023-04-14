@@ -12,9 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @AllArgsConstructor
 @Builder
-public class Member extends Timestamp {
-    public static final int NICKNAME_MAX_LENGTH = 20;
-
+public class Exercise extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,29 +20,25 @@ public class Member extends Timestamp {
     @Column(columnDefinition = "char(36)", nullable = false, unique = true)
     private String uuid;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(nullable = false)
+    private String title;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(length = NICKNAME_MAX_LENGTH, nullable = false)
-    private String nickname;
+    private String url;
 
     @Column(nullable = false)
-    private String studentId;
+    private String fitPartName;
 
     @Column(nullable = false)
-    private String phone;
+    private String youtubeId;
 
     @Column(nullable = false)
-    private String image;
+    private String channelName;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private int viewCnt;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 
