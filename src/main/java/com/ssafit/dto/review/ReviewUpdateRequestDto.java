@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 public class ReviewUpdateRequestDto {
-    private String uuid;
-    private String content;
+    private final String uuid;
+    private final String title;
+    private final String content;
 }

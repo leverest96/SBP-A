@@ -12,14 +12,19 @@ import java.util.UUID;
 public class Review extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(columnDefinition = "char(36)", nullable = false, unique = true)
-    @EqualsAndHashCode.Include
     private String uuid;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    private int viewCnt;
 
     @JoinColumn(name = "exercise_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,16 +43,23 @@ public class Review extends Timestamp {
         this.uuid = UUID.randomUUID().toString();
     }
 
+    public void updateViewCnt() {
+        this.viewCnt += 1;
+    }
+
     @Builder
-    public Review(final int id, final String content, final Exercise exercise, final Member member) {
+    public Review(final Long id, final String title, final String content, final Exercise exercise, final Member member) {
         setExercise(exercise);
         setMember(member);
 
         this.id = id;
+        this.title = title;
         this.content = content;
+        this.viewCnt = 0;
     }
 
-    public void update(final String content) {
+    public void update(final String title, final String content) {
+        this.title = title;
         this.content = content;
     }
 

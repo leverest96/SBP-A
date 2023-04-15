@@ -17,7 +17,7 @@ public class Member extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(columnDefinition = "char(36)", nullable = false, unique = true)
     private String uuid;
@@ -43,6 +43,10 @@ public class Member extends Timestamp {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Exercise> exercises = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @Builder.Default

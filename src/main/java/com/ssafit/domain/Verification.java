@@ -13,10 +13,10 @@ import java.util.Random;
 public class Verification extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
+    private Long id;
 
     @Column(nullable = false)
-    private final String email;
+    private String email;
 
     @Column
     private String code;

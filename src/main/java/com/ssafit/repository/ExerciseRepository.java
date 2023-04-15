@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Optional<Exercise> findByUuid(final String uuid);
+    Optional<Exercise> findByTitle(final String title);
 
     Page<Exercise> findByFitPartName(final String fitPartName, final Pageable pageable);
 

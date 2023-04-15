@@ -11,8 +11,13 @@ import java.time.LocalDateTime;
 @Builder
 public class ReviewWithProfileVo {
     private final String uuid;
+
     private final String nickname;
-    private final String content;
+
+    private final String title;
+
+    private final int viewCnt;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime createdDate;
 }

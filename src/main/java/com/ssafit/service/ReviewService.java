@@ -32,8 +32,8 @@ public class ReviewService {
     private final ExerciseRepository exerciseRepository;
 
     @Transactional
-    public ReviewRegisterResponseDto registerReview(final String profileUuid, final ReviewRegisterRequestDto requestDto) {
-        final Member member = memberRepository.findByUuid(profileUuid).orElseThrow(
+    public ReviewRegisterResponseDto registerReview(final String studentId, final ReviewRegisterRequestDto requestDto) {
+        final Member member = memberRepository.findByStudentId(studentId).orElseThrow(
                 () -> new MemberException(MemberStatus.NOT_EXISTING_MEMBER)
         );
 
@@ -53,7 +53,24 @@ public class ReviewService {
                 .uuid(result.getUuid()).build();
     }
 
-    public ReviewReadResponseDto readReviewList(final String exerciseUuid, final Pageable pageable) {
+    public ReviewReadResponseDto readReview(final String uuid) {
+        final Review review = reviewRepository.findByUuid(uuid).orElseThrow(
+                () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
+        );
+
+        updateViewCnt(uuid);
+
+        return ReviewReadResponseDto.builder()
+                .uuid(review.getUuid())
+                .nickname(review.getMember().getNickname())
+                .title(review.getTitle())
+                .content(review.getContent())
+                .viewCnt(review.getViewCnt())
+                .createdDate(review.getCreatedDate())
+                .build();
+    }
+
+    public ReviewListReadResponseDto readReviewList(final String exerciseUuid, final Pageable pageable) {
         if (exerciseRepository.findByUuid(exerciseUuid).isEmpty()) {
             throw new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE);
         }
@@ -70,41 +87,57 @@ public class ReviewService {
             final ReviewWithProfileVo commentWithProfileVo = ReviewWithProfileVo.builder()
                     .uuid(review.getUuid())
                     .nickname(review.getMember().getNickname())
-                    .content(review.getContent())
+                    .title(review.getTitle())
+                    .viewCnt(review.getViewCnt())
                     .createdDate(review.getCreatedDate())
                     .build();
 
             reviews.add(commentWithProfileVo);
         }
 
-        return ReviewReadResponseDto.builder()
+        return ReviewListReadResponseDto.builder()
                 .reviews(reviews)
                 .totalPages(totalPages)
                 .build();
     }
 
-    public ReviewUpdateResponseDto updateReview(final String profileUuid, final ReviewUpdateRequestDto requestDto) {
+    @Transactional
+    protected void updateViewCnt(final String uuid) {
+        final Review review = reviewRepository.findByUuid(uuid).orElseThrow(
+                () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
+        );
+
+        review.updateViewCnt();
+    }
+
+    public ReviewUpdateResponseDto updateReview(final String studentId, final ReviewUpdateRequestDto requestDto) {
         final Review review = reviewRepository.findByUuid(requestDto.getUuid()).orElseThrow(
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
         );
 
-        if (!review.getMember().getUuid().equals(profileUuid)) {
+        if (!review.getMember().getStudentId().equals(studentId)) {
             throw new ReviewException(ReviewStatus.UNAUTHORIZED_MEMBER);
         }
 
+        final String title = requestDto.getTitle();
         final String content = requestDto.getContent();
 
-        review.update(content);
+        review.update(title, content);
 
         return ReviewUpdateResponseDto.builder()
+                .title(title)
                 .content(content)
                 .build();
     }
 
-    public ReviewDeleteResponseDto deleteReview(final String uuid) {
+    public ReviewDeleteResponseDto deleteReview(final String studentId, final String uuid) {
         final Review review = reviewRepository.findByUuid(uuid).orElseThrow(
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
         );
+
+        if (!review.getMember().getStudentId().equals(studentId)) {
+            throw new ReviewException(ReviewStatus.UNAUTHORIZED_MEMBER);
+        }
 
         reviewRepository.delete(review);
 

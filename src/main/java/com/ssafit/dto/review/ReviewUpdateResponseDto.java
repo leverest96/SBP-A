@@ -7,5 +7,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 public class ReviewUpdateResponseDto {
+    private final String title;
     private final String content;
 }

@@ -1,10 +1,17 @@
 package com.ssafit.service;
 
 import com.ssafit.domain.Exercise;
+import com.ssafit.domain.Member;
+import com.ssafit.domain.Review;
 import com.ssafit.dto.Exercise.*;
 import com.ssafit.exception.ExerciseException;
+import com.ssafit.exception.MemberException;
+import com.ssafit.exception.ReviewException;
 import com.ssafit.exception.status.ExerciseStatus;
+import com.ssafit.exception.status.MemberStatus;
+import com.ssafit.exception.status.ReviewStatus;
 import com.ssafit.repository.ExerciseRepository;
+import com.ssafit.repository.MemberRepository;
 import com.ssafit.vo.exercise.ExerciseVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,9 +27,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
+    private final MemberRepository memberRepository;
 
-    public boolean checkExerciseTitleDuplication(final String uuid) {
-        return exerciseRepository.findByUuid(uuid).isPresent();
+    public boolean checkExerciseTitleDuplication(final String title) {
+        return exerciseRepository.findByTitle(title).isPresent();
     }
 
     @Transactional
@@ -37,7 +45,6 @@ public class ExerciseService {
                 .fitPartName(requestDto.getFitPartName())
                 .youtubeId(requestDto.getYoutubeId())
                 .channelName(requestDto.getChannelName())
-                .viewCnt(0)
                 .build();
 
         final Exercise result = exerciseRepository.save(exercise);
@@ -52,6 +59,8 @@ public class ExerciseService {
                 () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
         );
 
+        updateViewCnt(uuid);
+
         return ExerciseReadResponseDto.builder()
                 .title(exercise.getTitle())
                 .url(exercise.getUrl())
@@ -61,14 +70,14 @@ public class ExerciseService {
                 .build();
     }
 
-    public ExerciseListReadResponseDto readAllExerciseList(final Pageable pageable) {
-        final Page<Exercise> exercisePage = exerciseRepository.findAllByOrderByViewCnt(pageable);
+    public ExerciseListReadResponseDto readExerciseList(final String fitPartName, final Pageable pageable) {
+        final Page<Exercise> exercisePage = exerciseRepository.findByFitPartName(fitPartName, pageable);
 
         return extractPageableInfos(exercisePage);
     }
 
-    public ExerciseListReadResponseDto readExerciseList(final String fitPartName, final Pageable pageable) {
-        final Page<Exercise> exercisePage = exerciseRepository.findByFitPartName(fitPartName, pageable);
+    public ExerciseListReadResponseDto readAllExerciseList(final Pageable pageable) {
+        final Page<Exercise> exercisePage = exerciseRepository.findAllByOrderByViewCnt(pageable);
 
         return extractPageableInfos(exercisePage);
     }
@@ -99,10 +108,23 @@ public class ExerciseService {
     }
 
     @Transactional
-    public ExerciseDeleteResponseDto deleteExercise(final String uuid) {
+    protected void updateViewCnt(final String uuid) {
         final Exercise exercise = exerciseRepository.findByUuid(uuid).orElseThrow(
                 () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
         );
+
+        exercise.updateViewCnt();
+    }
+
+    @Transactional
+    public ExerciseDeleteResponseDto deleteExercise(final String studentId, final String exerciseUuid) {
+        final Exercise exercise = exerciseRepository.findByUuid(exerciseUuid).orElseThrow(
+                () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
+        );
+
+        if (!exercise.getMember().getStudentId().equals(studentId)) {
+            throw new ExerciseException(ExerciseStatus.NOT_AUTHORIZED_MEMBER);
+        }
 
         exerciseRepository.delete(exercise);
 
