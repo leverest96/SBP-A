@@ -77,7 +77,7 @@ public class MemberService {
                 .nickname(requestDto.getNickname())
                 .studentId(requestDto.getStudentId())
                 .phone(requestDto.getPhone())
-                .image("https://www.google.com/url?sa=i&url=https%3A%2F%2Fjhblog.tistory.com%2F372&psig=AOvVaw1reZ5UhkNOINfn_WwN8B3u&ust=1681433982632000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCOj2z-vTpf4CFQAAAAAdAAAAABAE")
+                .image("imageInput")
                 .role((requestDto.isAdmin()) ? (Role.ADMIN) : (Role.USER))
                 .build();
 

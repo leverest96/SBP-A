@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+
+  <title>Register Page</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+          integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous" defer></script>
+
+  <script src="/js/exercise.js" defer></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="container is-max-desktop">
+  <section class="section">
+    <div class="box is-flex is-flex-direction-column py-6 has-background-white-bis is-shadowless">
+      <div class="block is-flex is-align-content-center is-justify-content-center">
+        <h1 class="title">운동 등록 페이지</h1>
+      </div>
+
+      <div class="field has-addons mt-5 px-6">
+        <p class="control has-icons-left is-expanded">
+          <input type="text" placeholder="제목" id="title-input" class="input">
+
+          <span class="icon is-small is-left">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+        </p>
+      </div>
+
+      <div class="field has-addons mt-5 px-6">
+        <p class="control has-icons-left is-expanded">
+          <input type="text" placeholder="url" id="url-input" class="input">
+
+          <span class="icon is-small is-left">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+        </p>
+      </div>
+
+      <div class="field mt-4 px-6">
+        <p class="control has-icons-left">
+          <input type="text" placeholder="운동 부위" id="fitPartName-input" class="input">
+
+          <span class="icon is-small is-left">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+        </p>
+      </div>
+
+      <div class="field has-addons mt-5 px-6">
+        <p class="control has-icons-left is-expanded">
+          <input type="text" placeholder="유튜버" id="youtubeId-input" class="input">
+
+          <span class="icon is-small is-left">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+        </p>
+      </div>
+
+      <div class="field mt-4 px-6">
+        <p class="control has-icons-left">
+          <input type="text" placeholder="채널 이름" id="channelName-input" class="input">
+
+          <span class="icon is-small is-left">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+        </p>
+      </div>
+
+      <div class="block is-flex is-align-content-center is-justify-content-center">
+        <div class="buttons">
+          <button class="button is-info" onclick="register()">운동 등록</button>
+          <a href="/" class="button">돌아가기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

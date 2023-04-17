@@ -12,6 +12,5 @@ public class MemberRegisterRequestDto {
     private final String nickname;
     private final String studentId;
     private final String phone;
-    private final String image;
     private final boolean admin;
 }

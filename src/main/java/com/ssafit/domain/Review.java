@@ -8,7 +8,6 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-@RequiredArgsConstructor
 public class Review extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

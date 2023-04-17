@@ -1,7 +1,9 @@
 package com.ssafit.domain;
 
+import jakarta.mail.Multipart;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;

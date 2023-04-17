@@ -59,7 +59,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{uuid}")
-    public ResponseEntity<ReviewDeleteResponseDto> deleteExercise(@AuthenticationPrincipal final MemberDetails memberDetails,
+    public ResponseEntity<ReviewDeleteResponseDto> deleteReview(@AuthenticationPrincipal final MemberDetails memberDetails,
                                                                   @PathVariable final String uuid) {
         final String studentId = memberDetails.getStudentId();
 

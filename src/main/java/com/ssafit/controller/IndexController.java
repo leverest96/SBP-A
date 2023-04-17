@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
     @GetMapping("/")
     public String directIndexPage() {
-        return "index";
+        return "main";
     }
 
     @GetMapping("/register")
@@ -29,6 +29,15 @@ public class IndexController {
         }
 
         return "login";
+    }
+
+    @GetMapping("/exerciseRegister")
+    public String directExerciseRegisterPage(@AuthenticationPrincipal final MemberDetails memberDetails) {
+        if (memberDetails == null) {
+            return "redirect:/";
+        }
+
+        return "exerciseRegister";
     }
 
     @GetMapping("/member")
