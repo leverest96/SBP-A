@@ -24,6 +24,7 @@ import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,20 +51,20 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
 
                 final DecodedJWT decodedRefreshToken = verifyRefreshToken(refreshToken);
 
-                String userId = decodedRefreshToken.getClaim(RefreshTokenClaim.STUDENT_ID.getClaim()).toString();
+                String studentId = decodedRefreshToken.getClaim(RefreshTokenClaim.STUDENT_ID.getClaim()).toString();
 
-                userId = userId.substring(1, userId.length() - 1);
+                studentId = studentId.substring(1, studentId.length() - 1);
 
                 CookieUtility.addCookie(
                         response,
                         AccessTokenProperties.COOKIE_NAME,
-                        accessTokenProvider.generate(Map.of(AccessTokenClaim.STUDENT_ID.getClaim(), userId))
+                        accessTokenProvider.generate(Map.of(AccessTokenClaim.STUDENT_ID.getClaim(), studentId))
                 );
 
                 CookieUtility.addCookie(
                         response,
                         RefreshTokenProperties.COOKIE_NAME,
-                        refreshTokenProvider.generate(Map.of(RefreshTokenClaim.STUDENT_ID.getClaim(), userId)),
+                        refreshTokenProvider.generate(Map.of(RefreshTokenClaim.STUDENT_ID.getClaim(), studentId)),
                         refreshTokenProvider.getValidSeconds()
                 );
 

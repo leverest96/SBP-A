@@ -19,8 +19,11 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @PostMapping("/register")
-    public ResponseEntity<ExerciseRegisterResponseDto> registerExercise(@RequestBody final ExerciseRegisterRequestDto requestDto) {
-        final ExerciseRegisterResponseDto result = exerciseService.registerExercise(requestDto);
+    public ResponseEntity<ExerciseRegisterResponseDto> registerExercise(@AuthenticationPrincipal final MemberDetails memberDetails,
+                                                                        @RequestBody final ExerciseRegisterRequestDto requestDto) {
+        final String studentId = memberDetails.getStudentId();
+
+        final ExerciseRegisterResponseDto result = exerciseService.registerExercise(studentId, requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -44,8 +47,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<ExerciseListReadResponseDto> readAllExerciseList(@RequestParam final int page,
-                                                                        @RequestParam final int size) {
+    public ResponseEntity<ExerciseListReadResponseDto> readAllExerciseList(@RequestParam final int page, @RequestParam final int size) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by("viewCnt").descending());
 
         final ExerciseListReadResponseDto result = exerciseService.readAllExerciseList(pageable);

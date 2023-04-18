@@ -91,3 +91,32 @@ function register() {
         alert('회원가입을 실패했습니다.');
     });
 }
+
+function login() {
+    const email = $('#email-input').val();
+    const password = $('#password-input').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/member/login',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            'email': email,
+            'password': password
+        })
+    }).done(function (data) {
+        alert('로그인을 성공했습니다.');
+        window.location.replace('/');
+    }).fail(function () {
+        alert('로그인을 실패했습니다.');
+    });
+}
+
+function logout() {
+    $.ajax({
+        type: 'POST',
+        url: '/api/member/logout'
+    }).done(function () {
+        window.location.replace('/');
+    });
+}

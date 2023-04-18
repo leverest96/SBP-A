@@ -99,13 +99,13 @@ public class MemberService {
 
         final Map<String, String> payload = new HashMap<>();
 
-        payload.put("studentId", String.valueOf(member.getStudentId()));
+        payload.put("studentId", member.getStudentId());
         payload.put("nickname", member.getNickname());
         payload.put("role", member.getRole().getDisplayName());
 
         final Map<String, String> refreshPayload = new HashMap<>();
 
-        payload.put("studentId", member.getStudentId());
+        refreshPayload.put("studentId", member.getStudentId());
 
         return MemberLoginResponseDto.builder()
                 .accessToken(accessTokenProvider.generate(payload))

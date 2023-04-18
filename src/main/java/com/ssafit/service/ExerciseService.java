@@ -34,10 +34,14 @@ public class ExerciseService {
     }
 
     @Transactional
-    public ExerciseRegisterResponseDto registerExercise(final ExerciseRegisterRequestDto requestDto) {
+    public ExerciseRegisterResponseDto registerExercise(final String studentId, final ExerciseRegisterRequestDto requestDto) {
         if (checkExerciseTitleDuplication(requestDto.getTitle())) {
             throw new ExerciseException(ExerciseStatus.EXISTING_YOUTUBE);
         }
+
+        final Member member = memberRepository.findByStudentId(studentId).orElseThrow(
+                () -> new MemberException(MemberStatus.NOT_EXISTING_MEMBER)
+        );
 
         Exercise exercise = Exercise.builder()
                 .title(requestDto.getTitle())
@@ -45,6 +49,7 @@ public class ExerciseService {
                 .fitPartName(requestDto.getFitPartName())
                 .youtubeId(requestDto.getYoutubeId())
                 .channelName(requestDto.getChannelName())
+                .member(member)
                 .build();
 
         final Exercise result = exerciseRepository.save(exercise);
