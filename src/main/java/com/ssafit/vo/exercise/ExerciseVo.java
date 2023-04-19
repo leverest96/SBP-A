@@ -18,4 +18,6 @@ public class ExerciseVo {
     private final String youtubeId;
 
     private final String channelName;
+
+    private final int viewCnt;
 }

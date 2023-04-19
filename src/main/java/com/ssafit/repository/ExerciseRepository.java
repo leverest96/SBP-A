@@ -13,7 +13,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Optional<Exercise> findByTitle(final String title);
     List<Exercise> findAll();
 
-    Page<Exercise> findByFitPartName(final String fitPartName, final Pageable pageable);
+    List<Exercise> findAllByFitPartName(final String fitPartName);
 
-    Page<Exercise> findAllByOrderByViewCnt(final Pageable pageable);
+    List<Exercise> findAllByOrderByViewCnt();
 }

@@ -1,77 +1,123 @@
 $(function () {
     $.ajax({
         type: 'GET',
-        url: `/api/exercise/read?page=${page - 1}&size=${size}`
+        url: '/api/exercise/read'
     }).done(function (data) {
         const exercises = data.exercises;
-        const totalPages = data.totalPages;
 
-        exercises.forEach(exercise => {
-            let exerciseHtml = `
-                <div class="box is-shadowless mb-4">
-                    <div class="is-flex is-justify-content-space-between mb-3">
-                        <div class="is-flex is-flex-direction-row">
-                            <p>
-                                <b>${exercise.title}</b>
-                            </p>
-                            <p>&nbsp;·&nbsp;</p>
-                            <p>${exercise.url}</p>
+        exercises.forEach((exercise, index) => {
+            if (index === 0) {
+                $('#carousel-inner').append(`
+                    <div class="carousel-item active" style="width: 100%; overflow: hidden">
+                      <div class="container container-top">
+                        <div class="row" id="row-${Math.floor(index / 3)}">
+                        
                         </div>
+                      </div>
                     </div>
-                </div>
-            `;
-
-            $('#exercise').append(exerciseHtml);
+                `);
+            } else if (index % 3 === 0 && index !== 0) {
+                $('#carousel-inner').append(`
+                    <div class="carousel-item" style="width: 100%; overflow: hidden">
+                      <div class="container container-bottom">
+                        <div class="row" id="row-${Math.floor(index / 3)}">
+                        
+                        </div>
+                      </div>
+                    </div>
+                `);
+            }
         });
 
-        createPagination(page, totalPages, 2);
+        exercises.forEach((exercise, index) => {
+            $(`#row-${Math.floor(index / 3)}`).append(`
+                <div class="col">
+                  <div class="card">
+                    <iframe src="${exercise.url}"></iframe>
+                    <div class="card-body" onclick="location.href ='detail/${exercise.uuid}?page=1&size=5'">
+                      <h5 class="card-title">${exercise.title}</h5>
+                      <span class="card-text" style="color:#0c4da2; font-weight: bold;">${exercise.fitPartName}</span>
+                      <i class="bi bi-eye" style="float: right; margin-right:3%;"> ${exercise.viewCnt}</i>
+                    </div>
+                  </div>
+                </div>
+            `);
+        });
+    }).fail(function (xhr, status, error) {
+        console.error('AJAX request failed:', status, error);
     });
 });
 
-// 메인 페이지에서 리뷰 페이지로 전환시, 사용자 선택 정보를 제공하는 함수 
-function movePage(data) {
-    location.replace(data.url);
-}
+function select(fitPartName) {
+    $.ajax({
+        type: 'GET',
+        url: `/api/exercise/read/${fitPartName}`
+    }).done(function (data) {
+        const exercises = data.exercises;
 
-function createPagination(currentPage, totalPages, offset) {
-    let firstPage = currentPage - offset;
-    let lastPage = currentPage + offset;
+        const element = document.querySelector('.variable');
 
-    if (firstPage < 1) {
-        firstPage = 1;
-
-        if (lastPage < firstPage + offset * 2) {
-            lastPage = firstPage + offset * 2;
+        if (element) {
+            element.remove();
         }
-    }
 
-    if (lastPage > totalPages) {
-        lastPage = totalPages;
-
-        if (firstPage > lastPage - offset * 2) {
-            firstPage = lastPage - offset * 2;
+        if (exercises === null) {
+            $('#carousel-inner-part').append(`
+                    <div class="variable carousel-item" style="width: 100%; overflow: hidden">
+                      <div class="container container-bottom">
+                        <div class="row">
+                          <div class="col">
+                            <div class="card">
+                              <div class="card-body">
+                                <h1 class="card-title">아직 등록된 영상이 없습니다.</h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                `);
         }
-    }
 
-    if (firstPage < 1) {
-        firstPage = 1;
-    }
+        exercises.forEach((exercise, index) => {
+            if (index === 0) {
+                $('#carousel-inner-part').append(`
+                    <div class="variable carousel-item active" style="width: 100%; overflow: hidden">
+                      <div class="container container-top">
+                        <div class="row" id="part-row-${Math.floor(index / 2)}">
+                        
+                        </div>
+                      </div>
+                    </div>
+                `);
+            } else if (index % 2 === 0 && index !== 0) {
+                $('#carousel-inner-part').append(`
+                    <div class="variable carousel-item" style="width: 100%; overflow: hidden">
+                      <div class="container container-bottom">
+                        <div class="row" id="part-row-${Math.floor(index / 2)}">
+                        
+                        </div>
+                      </div>
+                    </div>
+                `);
+            }
+        });
 
-    const paginationList = $('#pagination-list');
-
-    for (let pageNumber = firstPage; pageNumber <= lastPage; pageNumber++) {
-        if (pageNumber == currentPage) {
-            paginationList.append(`
-                <li>
-                    <a href="/til/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link has-background-primary-dark has-text-white">${pageNumber}</a>
-                </li>
+        exercises.forEach((exercise, index) => {
+            $(`#part-row-${Math.floor(index / 2)}`).append(`
+                <div class="col">
+                  <div class="card">
+                    <iframe src="${exercise.url}"></iframe>
+                    <div class="card-body" onclick="location.href ='detail/${exercise.uuid}?page=1&size=5'">
+                      <h5 class="card-title">${exercise.title}</h5>
+                      <span class="card-text" style="color:#0c4da2; font-weight: bold;">${exercise.fitPartName}</span>
+                      <i class="bi bi-eye" style="float: right; margin-right:3%;"> ${exercise.viewCnt}</i>
+                    </div>
+                  </div>
+                </div>
             `);
-        } else {
-            paginationList.append(`
-                <li>
-                    <a href="/til/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link">${pageNumber}</a>
-                </li>
-            `);
-        }
-    }
+        });
+    }).fail(function (xhr, status, error) {
+        console.error('AJAX request failed:', status, error);
+    });
 }

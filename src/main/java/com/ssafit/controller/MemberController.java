@@ -50,7 +50,7 @@ public class MemberController {
         CookieUtility.addCookie(response, AccessTokenProperties.COOKIE_NAME, result.getAccessToken());
         CookieUtility.addCookie(response, RefreshTokenProperties.COOKIE_NAME, result.getRefreshToken(), 6480000);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PostMapping("/logout")

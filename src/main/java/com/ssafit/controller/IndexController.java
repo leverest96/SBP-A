@@ -1,14 +1,22 @@
 package com.ssafit.controller;
 
 import com.ssafit.security.userdetails.MemberDetails;
+import com.ssafit.service.ExerciseService;
+import com.ssafit.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class IndexController {
+    private final ExerciseService exerciseService;
+    private final MemberService memberService;
+
     @GetMapping("/")
     public String directIndexPage(final Model model) {
         model.addAttribute("page", 1);
@@ -44,13 +52,25 @@ public class IndexController {
         return "exerciseRegister";
     }
 
-    @GetMapping("/member")
-    public String directMemberPage(@AuthenticationPrincipal final MemberDetails memberDetails,
+    @GetMapping("/detail/{uuid}")
+    public String directMemberPage(@PathVariable final String uuid,
+                                   @RequestParam final String page,
+                                   @RequestParam final String size,
+                                   @AuthenticationPrincipal final MemberDetails memberDetails,
                                    final Model model) {
-        model.addAttribute("studentId", memberDetails.getStudentId());
-        model.addAttribute("nickname", memberDetails.getNickname());
+        if (!exerciseService.checkExerciseUuidExistence(uuid)) {
+            return "redirect:/";
+        }
 
-        return "member";
+        model.addAttribute("uuid", uuid);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+
+        if (memberDetails != null) {
+            model.addAttribute("reviewable", true);
+        }
+
+        return "review";
     }
 
     @GetMapping("/admin")

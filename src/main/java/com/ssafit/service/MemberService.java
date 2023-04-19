@@ -108,6 +108,7 @@ public class MemberService {
         refreshPayload.put("studentId", member.getStudentId());
 
         return MemberLoginResponseDto.builder()
+                .nickname(member.getNickname())
                 .accessToken(accessTokenProvider.generate(payload))
                 .refreshToken(refreshTokenProvider.generate(refreshPayload))
                 .build();

@@ -55,10 +55,15 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
 
                 studentId = studentId.substring(1, studentId.length() - 1);
 
+                final Map<String, String> payload = new HashMap<>();
+
+                payload.put("studentId", studentId);
+                payload.put("role", "사용자");
+
                 CookieUtility.addCookie(
                         response,
                         AccessTokenProperties.COOKIE_NAME,
-                        accessTokenProvider.generate(Map.of(AccessTokenClaim.STUDENT_ID.getClaim(), studentId))
+                        accessTokenProvider.generate(payload)
                 );
 
                 CookieUtility.addCookie(

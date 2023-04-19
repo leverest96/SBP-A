@@ -11,6 +11,4 @@ import java.util.List;
 @Builder
 public class ExerciseListReadResponseDto {
     private final List<ExerciseVo> exercises;
-
-    private final int totalPages;
 }

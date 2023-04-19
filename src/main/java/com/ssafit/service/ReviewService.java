@@ -42,6 +42,7 @@ public class ReviewService {
         );
 
         Review review = Review.builder()
+                .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .exercise(exercise)
                 .member(member)

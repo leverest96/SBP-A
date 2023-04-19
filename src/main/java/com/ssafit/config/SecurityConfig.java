@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/admin").hasAuthority("관리자")
                 .requestMatchers(HttpMethod.POST, "/api/member/mailSender", "/api/member/verify",
                         "/api/member/register", "/api/member/login").anonymous()
-                .requestMatchers(HttpMethod.GET, "/api/exercise/read").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/exercise/read", "/api/exercise/read/**").permitAll()
                 .anyRequest().authenticated()
         );
 

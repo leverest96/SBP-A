@@ -17,8 +17,7 @@
   <script src="/js/main.js" defer></script>
 
   <script th:inline="javascript">
-    const page = [[${page}]];
-    const size = [[${size}]];
+    const fitPartName = [[${fitPartName}]];
   </script>
 
   <!-- 부트스트랩 css -->
@@ -49,13 +48,16 @@
           <li class="nav-item">
             <a class="nav-link" href="#" style="color:rgb(27, 137, 201)"><strong>HOME</strong></a>
           </li>
-          <li class="nav-item">
+          <li id="regist-exercise" class="nav-item">
             <a class="nav-link text-secondary" href="/exerciseRegister"><strong>운동 등록</strong></a>
           </li>
-          <li class="nav-item">
+          <li id="login-button" class="nav-item">
             <a class="nav-link" href="/login" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
           </li>
-          <li class="nav-item">
+          <li id="mypage-button" class="nav-item">
+            <a class="nav-link" href="/mypage" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
+          </li>
+          <li id="logout-button" class="nav-item">
             <button class="nav-link" onclick="logout()"><i class="bi bi-box-arrow-in-right" style="color:blueviolet"></i></button>
           </li>
         </ul>
@@ -102,45 +104,42 @@
     <!-- 촤근 가장 많이 본 영상 Start-->
     <h4 style="color:darkslategray"><strong>최근 가장 많이 본 영상</strong></h4>
     <div class="box">
-      <div id="exercise" class="is-flex is-flex-direction-column"></div>
+      <div id="popular-video" class="carousel carousel-dark slide">
+        <div id="carousel-inner" class="carousel-inner">
 
-      <nav class="pagination is-centered">
-        <ul id="pagination-list" class="pagination-list"></ul>
-      </nav>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#popular-video" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#popular-video" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
     <br><br>
     <!-- 최근 가장 많이 본 영상 End -->
 
     <!-- 운동 부위 선택 영상 Start -->
     <h4 style="color:darkslategray"><strong>운동 부위 선택 </strong></h4>
-    <button type="button" class="btn btn-secondary" id="part1">전신</button>
-    <button type="button" class="btn btn-secondary" id="part2">상체</button>
-    <button type="button" class="btn btn-secondary" id="part3">하체</button>
-    <button type="button" class="btn btn-secondary" id="part4">복부</button>
+    <button type="button" class="btn btn-secondary" id="part1" onclick="select('전신')">전신</button>
+    <button type="button" class="btn btn-secondary" id="part2" onclick="select('상체')">상체</button>
+    <button type="button" class="btn btn-secondary" id="part3" onclick="select('하체')">하체</button>
+    <button type="button" class="btn btn-secondary" id="part4" onclick="select('복부')">복부</button>
     <div class="box">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card left">
-              <iframe src=""
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-              <div class="card-body">
-                <h5 class="card-title"></h5>
-                <p class="card-text" style="color:blueviolet; font-weight: bold;"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card right">
-              <iframe src=""></iframe>
-              <div class="card-body">
-                <h5 class="card-title"></h5>
-                <p class="card-text" style="color:blueviolet; font-weight: bold;"></p>
-              </div>
-            </div>
-          </div>
+      <div id="part-video" class="carousel carousel-dark slide">
+        <div id="carousel-inner-part" class="carousel-inner">
+
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#popular-video" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#popular-video" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>

@@ -28,7 +28,7 @@ public class ExerciseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping("/read/{uuid}")
+    @GetMapping("/read/one/{uuid}")
     public ResponseEntity<ExerciseReadResponseDto> readExercise(@PathVariable final String uuid) {
         final ExerciseReadResponseDto result = exerciseService.readExercise(uuid);
 
@@ -36,23 +36,17 @@ public class ExerciseController {
     }
 
     @GetMapping("/read/{fitPartName}")
-    public ResponseEntity<ExerciseListReadResponseDto> readExerciseList(@PathVariable final String fitPartName,
-                                                                        @RequestParam final int page,
-                                                                        @RequestParam final int size) {
-        final Pageable pageable = PageRequest.of(page, size, Sort.by("viewCnt").descending());
+    public ResponseEntity<ExerciseListReadResponseDto> readExerciseList(@PathVariable final String fitPartName) {
+        final ExerciseListReadResponseDto exercises = exerciseService.readExerciseList(fitPartName);
 
-        final ExerciseListReadResponseDto result = exerciseService.readExerciseList(fitPartName, pageable);
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(exercises);
     }
 
     @GetMapping("/read")
-    public ResponseEntity<ExerciseListReadResponseDto> readAllExerciseList(@RequestParam final int page, @RequestParam final int size) {
-        final Pageable pageable = PageRequest.of(page, size, Sort.by("viewCnt").descending());
+    public ResponseEntity<ExerciseListReadResponseDto> readAllExerciseList() {
+        final ExerciseListReadResponseDto exercises = exerciseService.readAllExerciseList();
 
-        final ExerciseListReadResponseDto result = exerciseService.readAllExerciseList(pageable);
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(exercises);
     }
 
     @DeleteMapping("/{uuid}")

@@ -7,6 +7,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @Builder
 public class MemberLoginResponseDto {
+    private final String nickname;
     private final String accessToken;
     private final String refreshToken;
 }

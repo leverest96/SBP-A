@@ -33,6 +33,10 @@ public class ExerciseService {
         return exerciseRepository.findByTitle(title).isPresent();
     }
 
+    public boolean checkExerciseUuidExistence(final String uuid) {
+        return exerciseRepository.findByUuid(uuid).isPresent();
+    }
+
     @Transactional
     public ExerciseRegisterResponseDto registerExercise(final String studentId, final ExerciseRegisterRequestDto requestDto) {
         if (checkExerciseTitleDuplication(requestDto.getTitle())) {
@@ -75,32 +79,30 @@ public class ExerciseService {
                 .build();
     }
 
-    public ExerciseListReadResponseDto readExerciseList(final String fitPartName, final Pageable pageable) {
-        final Page<Exercise> exercisePage = exerciseRepository.findByFitPartName(fitPartName, pageable);
+    public ExerciseListReadResponseDto readExerciseList(final String fitPartName) {
+        final List<Exercise> exerciseList = exerciseRepository.findAllByFitPartName(fitPartName);
 
-        return extractPageableInfos(exercisePage);
+        return extractPageableInfos(exerciseList);
     }
 
-    public ExerciseListReadResponseDto readAllExerciseList(final Pageable pageable) {
-        final Page<Exercise> exercisePage = exerciseRepository.findAllByOrderByViewCnt(pageable);
+    public ExerciseListReadResponseDto readAllExerciseList() {
+        final List<Exercise> exerciseList = exerciseRepository.findAllByOrderByViewCnt();
 
-        return extractPageableInfos(exercisePage);
+        return extractPageableInfos(exerciseList);
     }
 
-    private ExerciseListReadResponseDto extractPageableInfos(final Page<Exercise> exercisePage) {
-        final List<Exercise> exerciseList = exercisePage.getContent();
-
-        final int totalPages = exercisePage.getTotalPages();
-
+    private ExerciseListReadResponseDto extractPageableInfos(final List<Exercise> exerciseList) {
         final List<ExerciseVo> exercises = new ArrayList<>();
 
         for (final Exercise exercise : exerciseList) {
             ExerciseVo exerciseVo = ExerciseVo.builder()
+                    .uuid(exercise.getUuid())
                     .title(exercise.getTitle())
                     .url(exercise.getUrl())
                     .fitPartName(exercise.getFitPartName())
                     .youtubeId(exercise.getYoutubeId())
                     .channelName(exercise.getChannelName())
+                    .viewCnt(exercise.getViewCnt())
                     .build();
 
             exercises.add(exerciseVo);
@@ -108,7 +110,6 @@ public class ExerciseService {
 
         return ExerciseListReadResponseDto.builder()
                 .exercises(exercises)
-                .totalPages(totalPages)
                 .build();
     }
 

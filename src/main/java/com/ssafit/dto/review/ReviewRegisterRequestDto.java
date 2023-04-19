@@ -10,5 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewRegisterRequestDto {
     private final String exerciseUuid;
+    private final String title;
     private final String content;
 }
