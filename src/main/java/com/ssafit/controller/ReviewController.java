@@ -1,8 +1,5 @@
 package com.ssafit.controller;
 
-import com.ssafit.dto.Exercise.ExerciseDeleteResponseDto;
-import com.ssafit.dto.Exercise.ExerciseListReadResponseDto;
-import com.ssafit.dto.Exercise.ExerciseReadResponseDto;
 import com.ssafit.dto.review.*;
 import com.ssafit.security.userdetails.MemberDetails;
 import com.ssafit.service.ReviewService;
@@ -37,23 +34,24 @@ public class ReviewController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/readAll/{exerciseUuid}")
-    public ResponseEntity<ReviewListReadResponseDto> readReviewList(@PathVariable final String exerciseUuid,
+    @GetMapping("/readAll/{uuid}")
+    public ResponseEntity<ReviewListReadResponseDto> readReviewList(@PathVariable final String uuid,
                                                                     @RequestParam final int page,
                                                                     @RequestParam final int size) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
 
-        final ReviewListReadResponseDto result = reviewService.readReviewList(exerciseUuid, pageable);
+        final ReviewListReadResponseDto result = reviewService.readReviewList(uuid, pageable);
 
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{uuid}")
-    public ResponseEntity<ReviewUpdateResponseDto> updateReview(@AuthenticationPrincipal final MemberDetails memberDetails,
-                                                                  @RequestBody final ReviewUpdateRequestDto requestDto) {
+    @PatchMapping("/{reviewUuid}")
+    public ResponseEntity<ReviewUpdateResponseDto> updateReview(@PathVariable final String reviewUuid,
+                                                                @AuthenticationPrincipal final MemberDetails memberDetails,
+                                                                @RequestBody final ReviewUpdateRequestDto requestDto) {
         final String studentId = memberDetails.getStudentId();
 
-        final ReviewUpdateResponseDto result = reviewService.updateReview(studentId, requestDto);
+        final ReviewUpdateResponseDto result = reviewService.updateReview(studentId, reviewUuid, requestDto);
 
         return ResponseEntity.ok(result);
     }

@@ -1,3 +1,5 @@
+let reviewUuid = '';
+
 $(function () {
     $.ajax({
         type: 'GET',
@@ -16,15 +18,16 @@ $(function () {
         const totalPages = data.totalPages;
 
         reviews.forEach((review, index) => {
-            $('#review-table').append();`
+            $('#review-table').append(`
                 <tr>
-                  <td>${index+1}</td>
-                  <td><a onclick="readReview(${review.uuid})"></a>${review.title}</td>
+                  <td>${index + 1 + (page - 1) * 5}</td>
+                  <td><a href="#" onclick="readReview('${review.uuid}')" data-bs-toggle="modal" data-bs-target="#detailModal">${review.title}</a></td>
                   <td>${review.nickname}</td>
                   <td>${review.viewCnt}</td>
                   <td>${review.createdDate}</td>
+                  <td></td>
                 </tr>
-            `;
+            `);
         });
 
         createPagination(page, totalPages, 2);
@@ -61,13 +64,13 @@ function createPagination(currentPage, totalPages, offset) {
         if (pageNumber == currentPage) {
             paginationList.append(`
                 <li>
-                    <a href="/til/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link has-background-primary-dark has-text-white">${pageNumber}</a>
+                    <a href="/detail/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link has-background-primary-dark has-text-white">${pageNumber}</a>
                 </li>
             `);
         } else {
             paginationList.append(`
                 <li>
-                    <a href="/til/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link">${pageNumber}</a>
+                    <a href="/detail/${uuid}?page=${pageNumber}&size=${size}" class="pagination-link">${pageNumber}</a>
                 </li>
             `);
         }
@@ -86,7 +89,9 @@ function writeComment() {
         return;
     }
 
-    const commentTitle = $('#writeModalInput').value;
+    const commentTitle = document.querySelector('#writeModalInput').value;
+
+    console.log(commentTitle);
 
     if (!commentTitle) {
         alert('제목을 입력해 주세요.');
@@ -94,7 +99,9 @@ function writeComment() {
         return;
     }
 
-    const commentContent = $('#writeModalTextarea').value;
+    const commentContent = document.querySelector('#writeModalTextarea').value;
+
+    console.log(commentContent);
 
     if (!commentContent) {
         alert('내용을 입력해 주세요.');
@@ -124,11 +131,36 @@ function readReview(uuid) {
         type: 'GET',
         url: `/api/review/read/${uuid}`
     }).done(function (data) {
+        reviewUuid = data.uuid;
         $('.titleHTML').text(data.title);
+        $('.contentHTML').text(data.content);
         $('.writerHTML').text(data.nickname);
         $('.dateHTML').text(data.createdDate);
         $('.visitHTML').html(data.viewCnt);
+        $('#modifyModalInput').text(data.title);
+        $('#modifyModalTextArea').text(data.content);
     }).fail(function () {
         alert('불러오기를 실패했습니다.');
+    })
+}
+
+function editReview() {
+    const commentTitle = document.querySelector('#modifyModalInput').value;
+
+    const commentContent = document.querySelector('#modifyModalTextArea').value;
+
+    $.ajax({
+        type: 'PATCH',
+        url: `/api/review/${reviewUuid}`,
+        contentType: 'application/json',
+        data: JSON.stringify({
+            'title': commentTitle,
+            'content': commentContent
+        })
+    }).done(function () {
+        alert('수정에 성공했습니다.');
+        window.location.reload();
+    }).fail(function () {
+        alert('수정에 실패했습니다.');
     })
 }

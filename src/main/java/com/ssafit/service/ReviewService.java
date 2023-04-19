@@ -37,7 +37,7 @@ public class ReviewService {
                 () -> new MemberException(MemberStatus.NOT_EXISTING_MEMBER)
         );
 
-        final Exercise exercise = exerciseRepository.findByUuid(requestDto.getExerciseUuid()).orElseThrow(
+        final Exercise exercise = exerciseRepository.findByUuid(requestDto.getUuid()).orElseThrow(
                 () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
         );
 
@@ -71,12 +71,12 @@ public class ReviewService {
                 .build();
     }
 
-    public ReviewListReadResponseDto readReviewList(final String exerciseUuid, final Pageable pageable) {
-        if (exerciseRepository.findByUuid(exerciseUuid).isEmpty()) {
+    public ReviewListReadResponseDto readReviewList(final String uuid, final Pageable pageable) {
+        if (exerciseRepository.findByUuid(uuid).isEmpty()) {
             throw new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE);
         }
 
-        final Page<Review> reviewPage = reviewRepository.findByExerciseUuid(exerciseUuid, pageable);
+        final Page<Review> reviewPage = reviewRepository.findByExerciseUuid(uuid, pageable);
 
         final List<Review> reviewContent = reviewPage.getContent();
 
@@ -103,7 +103,7 @@ public class ReviewService {
     }
 
     @Transactional
-    protected void updateViewCnt(final String uuid) {
+    public void updateViewCnt(final String uuid) {
         final Review review = reviewRepository.findByUuid(uuid).orElseThrow(
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
         );
@@ -111,8 +111,9 @@ public class ReviewService {
         review.updateViewCnt();
     }
 
-    public ReviewUpdateResponseDto updateReview(final String studentId, final ReviewUpdateRequestDto requestDto) {
-        final Review review = reviewRepository.findByUuid(requestDto.getUuid()).orElseThrow(
+    @Transactional
+    public ReviewUpdateResponseDto updateReview(final String studentId, final String reviewUuid, final ReviewUpdateRequestDto requestDto) {
+        final Review review = reviewRepository.findByUuid(reviewUuid).orElseThrow(
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
         );
 
@@ -131,6 +132,7 @@ public class ReviewService {
                 .build();
     }
 
+    @Transactional
     public ReviewDeleteResponseDto deleteReview(final String studentId, final String uuid) {
         final Review review = reviewRepository.findByUuid(uuid).orElseThrow(
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)

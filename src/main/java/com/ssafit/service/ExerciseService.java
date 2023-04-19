@@ -114,7 +114,7 @@ public class ExerciseService {
     }
 
     @Transactional
-    protected void updateViewCnt(final String uuid) {
+    public void updateViewCnt(final String uuid) {
         final Exercise exercise = exerciseRepository.findByUuid(uuid).orElseThrow(
                 () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
         );

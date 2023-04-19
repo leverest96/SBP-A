@@ -83,6 +83,7 @@
         <th scope="col">작성자</th>
         <th scope="col">조회수</th>
         <th scope="col">작성시간</th>
+        <th scope="col">삭제</th>
       </tr>
     </thead>
     <tbody id="review-table">
@@ -100,7 +101,7 @@
   <!-- Modal 구현 -->
 
   <!-- 리뷰 등록 화면 Modal Start -->
-  <div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -114,7 +115,7 @@
             </div>
             <div class="mb-3">
               <textarea class="form-control reviewdetail" id="writeModalTextarea" rows="3"
-                placeholder="내용 작성"></textarea>
+                        placeholder="내용 작성"></textarea>
             </div>
           </div>
         </div>
@@ -130,7 +131,7 @@
   <!-- 리뷰 등록 화면 Modal End -->
 
   <!-- 리뷰 상세 화면 Modal Start -->
-  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -146,7 +147,7 @@
               <p class="visitHTML"></p>
               <br>
               <hr>
-              <p class="contentHTML"></p>
+              <h3 class="contentHTML" style="margin:40px"></h3>
             </div>
           </div>
         </div>
@@ -163,7 +164,7 @@
   <!-- 리뷰 상세 화면 Modal End -->
 
   <!-- 리뷰 수정 화면 Modal Start -->
-  <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -183,7 +184,7 @@
         </div>
         <div class="modal-footer">
           <div class="d-grid gap-2 d-md-block">
-            <button type="button" class="btn btn-outline-primary confirmModify">수정</button>
+            <button type="button" class="btn btn-outline-primary confirmModify" onclick="editReview()">수정</button>
             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">취소</button>
           </div>
         </div>
