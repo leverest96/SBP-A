@@ -105,7 +105,7 @@ function login() {
             'password': password
         })
     }).done(function (data) {
-        alert(data.nickname + '로그인을 성공했습니다.');
+        alert(data.nickname + '님 로그인을 성공했습니다.');
         window.location.replace('/');
     }).fail(function () {
         alert('로그인을 실패했습니다.');

@@ -1,8 +1,12 @@
 package com.ssafit.exception.handler.controller;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.ssafit.exception.ExerciseException;
 import com.ssafit.exception.MemberException;
+import com.ssafit.exception.VerificationException;
+import com.ssafit.exception.status.ExerciseStatus;
 import com.ssafit.exception.status.MemberStatus;
+import com.ssafit.exception.status.VerificationStatus;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
@@ -61,6 +65,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({MemberException.class})
     public ResponseEntity<Object> handleMemberException(final MemberException ex) {
         final MemberStatus status = ex.getStatus();
+
+        log.warn("Member exception occurrence: {}", status.getMessage());
+
+        return ResponseEntity.status(status.getHttpStatus()).body(new ExceptionResponse(List.of(status.getMessage())));
+    }
+
+    @ExceptionHandler({ExerciseException.class})
+    public ResponseEntity<Object> handleMemberException(final ExerciseException ex) {
+        final ExerciseStatus status = ex.getStatus();
+
+        log.warn("Member exception occurrence: {}", status.getMessage());
+
+        return ResponseEntity.status(status.getHttpStatus()).body(new ExceptionResponse(List.of(status.getMessage())));
+    }
+
+    @ExceptionHandler({VerificationException.class})
+    public ResponseEntity<Object> handleMemberException(final VerificationException ex) {
+        final VerificationStatus status = ex.getStatus();
 
         log.warn("Member exception occurrence: {}", status.getMessage());
 

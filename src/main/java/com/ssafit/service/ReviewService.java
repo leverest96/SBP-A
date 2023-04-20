@@ -59,8 +59,6 @@ public class ReviewService {
                 () -> new ReviewException(ReviewStatus.NOT_EXISTING_REVIEW)
         );
 
-        updateViewCnt(uuid);
-
         return ReviewReadResponseDto.builder()
                 .uuid(review.getUuid())
                 .nickname(review.getMember().getNickname())

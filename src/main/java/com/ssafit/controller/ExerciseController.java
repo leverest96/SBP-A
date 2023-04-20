@@ -49,6 +49,13 @@ public class ExerciseController {
         return ResponseEntity.ok(exercises);
     }
 
+    @PatchMapping("/cnt/{uuid}")
+    public ResponseEntity<Void> updateViewCnt(@PathVariable final String uuid) {
+        exerciseService.updateViewCnt(uuid);
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{uuid}")
     public ResponseEntity<ExerciseDeleteResponseDto> deleteExercise(@AuthenticationPrincipal final MemberDetails memberDetails,
                                                                @PathVariable final String uuid) {

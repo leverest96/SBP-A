@@ -56,6 +56,13 @@ public class ReviewController {
         return ResponseEntity.ok(result);
     }
 
+    @PatchMapping("/cnt/{uuid}")
+    public ResponseEntity<Void> updateViewCnt(@PathVariable final String uuid) {
+        reviewService.updateViewCnt(uuid);
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{uuid}")
     public ResponseEntity<ReviewDeleteResponseDto> deleteReview(@AuthenticationPrincipal final MemberDetails memberDetails,
                                                                   @PathVariable final String uuid) {

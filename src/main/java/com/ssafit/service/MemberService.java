@@ -18,6 +18,7 @@ import com.ssafit.utility.jwt.JwtProvider;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,6 +56,13 @@ public class MemberService {
         );
 
         return verification.isState();
+    }
+
+    public String searchNicknameUsingStudentId(final String studentId) {
+        final Member member = memberRepository.findByStudentId(studentId)
+                .orElseThrow(() -> new MemberException(MemberStatus.NOT_EXISTING_MEMBER));
+
+        return member.getNickname();
     }
 
     @Transactional

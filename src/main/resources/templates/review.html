@@ -21,6 +21,7 @@
     const uuid = [[${uuid}]];
     const page = [[${page}]];
     const size = [[${size}]];
+    const memberNickname = [[${memberNickname}]];
     const reviewable = [[${reviewable}]];
   </script>
 
@@ -83,7 +84,7 @@
         <th scope="col">작성자</th>
         <th scope="col">조회수</th>
         <th scope="col">작성시간</th>
-        <th scope="col">삭제</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody id="review-table">
@@ -101,7 +102,7 @@
   <!-- Modal 구현 -->
 
   <!-- 리뷰 등록 화면 Modal Start -->
-  <div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
+  <div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:absolute; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -131,7 +132,7 @@
   <!-- 리뷰 등록 화면 Modal End -->
 
   <!-- 리뷰 상세 화면 Modal Start -->
-  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:absolute; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -152,10 +153,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="d-grid gap-2 d-md-block">
-            <button type="button" class="btn btn-outline-primary modify" data-bs-toggle="modal"
-              data-bs-target="#modifyModal">수정</button>
-            <button type="button" class="btn btn-outline-danger delete">삭제</button>
+          <div id="editor" class="d-grid gap-2 d-md-block">
+<!--            <button type="button" class="btn btn-outline-primary modify" data-bs-toggle="modal"-->
+<!--              data-bs-target="#modifyModal">수정</button>-->
+<!--            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">취소</button>-->
           </div>
         </div>
       </div>
@@ -164,7 +165,7 @@
   <!-- 리뷰 상세 화면 Modal End -->
 
   <!-- 리뷰 수정 화면 Modal Start -->
-  <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:relative; z-index:9999;">
+  <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:absolute; z-index:9999;">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">

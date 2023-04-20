@@ -18,16 +18,26 @@ $(function () {
         const totalPages = data.totalPages;
 
         reviews.forEach((review, index) => {
-            $('#review-table').append(`
+            let reviewHtml = `
                 <tr>
                   <td>${index + 1 + (page - 1) * 5}</td>
                   <td><a href="#" onclick="readReview('${review.uuid}')" data-bs-toggle="modal" data-bs-target="#detailModal">${review.title}</a></td>
                   <td>${review.nickname}</td>
                   <td>${review.viewCnt}</td>
                   <td>${review.createdDate}</td>
-                  <td></td>
+            `;
+
+            if (memberNickname === review.nickname) {
+                reviewHtml += `
+                    <td><button type="button" class="btn btn-outline-danger delete" onclick="removeReview('${review.uuid}')">삭제</button></td>
+                `;
+            }
+
+            reviewHtml += `
                 </tr>
-            `);
+            `;
+
+            $('#review-table').append(reviewHtml);
         });
 
         createPagination(page, totalPages, 2);
@@ -128,16 +138,37 @@ function writeComment() {
 
 function readReview(uuid) {
     $.ajax({
+        type: 'PATCH',
+        url: `/api/review/cnt/${uuid}`
+    })
+
+    $.ajax({
         type: 'GET',
         url: `/api/review/read/${uuid}`
     }).done(function (data) {
+        if (memberNickname === data.nickname) {
+            const edit = document.querySelector('#edit-button');
+            const exit = document.querySelector('#exit-button');
+
+            if (edit || exit) {
+                edit.remove();
+                exit.remove();
+            }
+
+            $('#editor').append(`
+                <button id="edit-button" type="button" class="btn btn-outline-primary modify" data-bs-toggle="modal"
+                  data-bs-target="#modifyModal">수정</button>
+                <button id="exit-button" type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">취소</button>
+            `);
+        }
+
         reviewUuid = data.uuid;
         $('.titleHTML').text(data.title);
         $('.contentHTML').text(data.content);
         $('.writerHTML').text(data.nickname);
         $('.dateHTML').text(data.createdDate);
         $('.visitHTML').html(data.viewCnt);
-        $('#modifyModalInput').text(data.title);
+        $('#modifyModalInput').val(data.title);
         $('#modifyModalTextArea').text(data.content);
     }).fail(function () {
         alert('불러오기를 실패했습니다.');
@@ -162,5 +193,17 @@ function editReview() {
         window.location.reload();
     }).fail(function () {
         alert('수정에 실패했습니다.');
+    })
+}
+
+function removeReview(reviewUuid) {
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/review/${reviewUuid}`
+    }).done(function () {
+        alert('삭제에 성공했습니다.');
+        window.location.reload();
+    }).fail(function () {
+        alert('삭제에 실패했습니다.');
     })
 }

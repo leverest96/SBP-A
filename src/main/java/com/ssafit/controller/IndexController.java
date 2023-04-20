@@ -18,9 +18,16 @@ public class IndexController {
     private final MemberService memberService;
 
     @GetMapping("/")
-    public String directIndexPage(final Model model) {
+    public String directIndexPage(@AuthenticationPrincipal final MemberDetails memberDetails,
+                                  final Model model) {
         model.addAttribute("page", 1);
         model.addAttribute("size", 3);
+
+        if (memberDetails != null) {
+            final String memberNickname = memberService.searchNicknameUsingStudentId(memberDetails.getStudentId());
+
+            model.addAttribute("memberNickname", memberNickname);
+        }
 
         return "main";
     }
@@ -67,6 +74,8 @@ public class IndexController {
         model.addAttribute("size", size);
 
         if (memberDetails != null) {
+            final String memberNickname = memberService.searchNicknameUsingStudentId(memberDetails.getStudentId());
+            model.addAttribute("memberNickname", memberNickname);
             model.addAttribute("reviewable", true);
         }
 

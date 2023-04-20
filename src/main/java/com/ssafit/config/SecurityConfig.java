@@ -57,11 +57,12 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.HEAD, "/api/member/email/**", "/api/member/nickname/**").anonymous()
-                .requestMatchers(HttpMethod.GET, "/", "/register", "/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/", "/register", "/login", "/detail/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/admin").hasAuthority("관리자")
                 .requestMatchers(HttpMethod.POST, "/api/member/mailSender", "/api/member/verify",
                         "/api/member/register", "/api/member/login").anonymous()
                 .requestMatchers(HttpMethod.GET, "/api/exercise/read", "/api/exercise/read/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/review/read", "/api/review/readAll").permitAll()
                 .anyRequest().authenticated()
         );
 

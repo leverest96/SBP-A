@@ -18,6 +18,7 @@
 
   <script th:inline="javascript">
     const fitPartName = [[${fitPartName}]];
+    const memberNickname = [[${memberNickname}]];
   </script>
 
   <!-- 부트스트랩 css -->
@@ -48,17 +49,17 @@
           <li class="nav-item">
             <a class="nav-link" href="#" style="color:rgb(27, 137, 201)"><strong>HOME</strong></a>
           </li>
-          <li id="regist-exercise" class="nav-item">
-            <a class="nav-link text-secondary" href="/exerciseRegister"><strong>운동 등록</strong></a>
+          <li class="nav-item">
+            <a id="regist-exercise" class="nav-link text-secondary is-hidden" href="/exerciseRegister"><strong>운동 등록</strong></a>
           </li>
-          <li id="login-button" class="nav-item">
-            <a class="nav-link" href="/login" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
+          <li class="nav-item">
+            <a id="login-button" class="nav-link" href="/login" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
           </li>
-          <li id="mypage-button" class="nav-item">
-            <a class="nav-link" href="/mypage" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
+          <li class="nav-item">
+            <a id="mypage-button" class="nav-link is-hidden" href="/mypage" style="color:rgb(27, 137, 201)"><i class="bi bi-person-plus" style="color:blueviolet"></i></a>
           </li>
-          <li id="logout-button" class="nav-item">
-            <button class="nav-link" onclick="logout()"><i class="bi bi-box-arrow-in-right" style="color:blueviolet"></i></button>
+          <li class="nav-item">
+            <button id="logout-button" class="nav-link is-hidden" onclick="logout()"><i class="bi bi-box-arrow-in-right" style="color:blueviolet"></i></button>
           </li>
         </ul>
       </div>
@@ -127,7 +128,7 @@
     <button type="button" class="btn btn-secondary" id="part2" onclick="select('상체')">상체</button>
     <button type="button" class="btn btn-secondary" id="part3" onclick="select('하체')">하체</button>
     <button type="button" class="btn btn-secondary" id="part4" onclick="select('복부')">복부</button>
-    <div class="box">
+    <div id="ifNotExists" class="box">
       <div id="part-video" class="carousel carousel-dark slide">
         <div id="carousel-inner-part" class="carousel-inner">
 

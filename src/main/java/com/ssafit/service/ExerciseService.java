@@ -68,8 +68,6 @@ public class ExerciseService {
                 () -> new ExerciseException(ExerciseStatus.NOT_EXISTING_EXERCISE)
         );
 
-        updateViewCnt(uuid);
-
         return ExerciseReadResponseDto.builder()
                 .title(exercise.getTitle())
                 .url(exercise.getUrl())
