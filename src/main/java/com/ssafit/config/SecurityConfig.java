@@ -62,7 +62,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/member/mailSender", "/api/member/verify",
                         "/api/member/register", "/api/member/login").anonymous()
                 .requestMatchers(HttpMethod.GET, "/api/exercise/read", "/api/exercise/read/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/review/read", "/api/review/readAll").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/review/read/**", "/api/review/readAll/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/api/exercise/cnt/**").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/api/review/cnt/**").permitAll()
                 .anyRequest().authenticated()
         );
 
